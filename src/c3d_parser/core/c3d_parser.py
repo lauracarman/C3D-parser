@@ -728,6 +728,14 @@ def calculate_force_and_couple(analog_data, plate_count):
 
     for i in range(plate_count):
         start = 1 + (6 * i)
+
+        next_plate = 1 + (6 * (i + 1))
+        if next_plate < len(analog_data.columns):
+            channel = analog_data.columns[start]
+            next_channel = analog_data.columns[next_plate]
+            if channel.startswith('Fx_3') and next_channel.startswith('Fx_3_new'):
+                start = next_plate
+
         columns = list(range(start, start + 6))
         Fx, Fy, Fz, Mx, My, Mz = analog_data.iloc[:, columns].values.T.astype(float)
 
