@@ -650,7 +650,24 @@ def extract_data(file_path, start_frame, end_frame):
         # Rotate GRF data to align with global CS.
         corners = get_metadata(reader, 'FORCE_PLATFORM:CORNERS').float_array
 
+        try:
+            units = get_metadata(reader, 'ANALOG:UNITS').string_array
+            channels = get_metadata(reader, 'FORCE_PLATFORM:CHANNEL').int16_array
+
+            if all(units[i - 1] == 'V' for i in channels.flatten()):
+                calibration_matrix = get_metadata(reader, 'FORCE_PLATFORM:CAL_MATRIX').float_array
+                apply_calibration_matrix(plate_count, calibration_matrix, channels, analog_data)
+        except ParserError as e:
+            logger.warn(e)
+
     return analog_data, reader.analog_rate, trimmed_events, plate_count, corners
+
+
+def apply_calibration_matrix(plate_count, calibration_matrix, channels, analog_data):
+    for i in range(plate_count):
+        raw = analog_data.iloc[:, channels[i]].to_numpy()
+        calibrated = raw @ calibration_matrix[i]
+        analog_data.iloc[:, channels[i]] = calibrated
 
 
 def extract_static_data(file_path):
