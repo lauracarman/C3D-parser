@@ -24,7 +24,7 @@ class Ui_OptionsDialog(object):
     def setupUi(self, OptionsDialog):
         if not OptionsDialog.objectName():
             OptionsDialog.setObjectName(u"OptionsDialog")
-        OptionsDialog.resize(450, 562)
+        OptionsDialog.resize(450, 624)
         self.verticalLayout = QVBoxLayout(OptionsDialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.groupBox_3 = QGroupBox(OptionsDialog)
@@ -247,6 +247,18 @@ class Ui_OptionsDialog(object):
 
         self.verticalLayout.addWidget(self.groupBox_5)
 
+        self.groupBox_6 = QGroupBox(OptionsDialog)
+        self.groupBox_6.setObjectName(u"groupBox_6")
+        self.verticalLayout_3 = QVBoxLayout(self.groupBox_6)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.checkBoxApproximateAnthropometrics = QCheckBox(self.groupBox_6)
+        self.checkBoxApproximateAnthropometrics.setObjectName(u"checkBoxApproximateAnthropometrics")
+
+        self.verticalLayout_3.addWidget(self.checkBoxApproximateAnthropometrics)
+
+
+        self.verticalLayout.addWidget(self.groupBox_6)
+
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
@@ -301,6 +313,8 @@ class Ui_OptionsDialog(object):
         self.checkBoxCustomTaskSet.setText(QCoreApplication.translate("OptionsDialog", u"Use custom IK task set file", None))
         self.labelIKTaskSet.setText(QCoreApplication.translate("OptionsDialog", u"IK task set file:", None))
         self.pushButtonIKTaskSetChooser.setText(QCoreApplication.translate("OptionsDialog", u"...", None))
+        self.groupBox_6.setTitle(QCoreApplication.translate("OptionsDialog", u"Anthropometrics", None))
+        self.checkBoxApproximateAnthropometrics.setText(QCoreApplication.translate("OptionsDialog", u"Approximate missing anthropometrics", None))
         self.pushButtonOK.setText(QCoreApplication.translate("OptionsDialog", u"OK", None))
         self.pushButtonCancel.setText(QCoreApplication.translate("OptionsDialog", u"Cancel", None))
     # retranslateUi

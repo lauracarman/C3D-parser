@@ -89,6 +89,7 @@ class OptionsDialog(QDialog):
         self._ui.checkBoxFilterGRF.setChecked(options['filter_grf'])
         self._ui.checkBoxCustomTaskSet.setChecked(options['use_custom_ik_task_set'])
         self._ui.lineEditIKTaskSet.setText(options['ik_task_set_path'])
+        self._ui.checkBoxApproximateAnthropometrics.setChecked(options['approximate_anthropometrics'])
 
     def save(self):
         options = {
@@ -103,6 +104,7 @@ class OptionsDialog(QDialog):
             'filter_grf': self._ui.checkBoxFilterGRF.isChecked(),
             'use_custom_ik_task_set': self._ui.checkBoxCustomTaskSet.isChecked(),
             'ik_task_set_path': self._ui.lineEditIKTaskSet.text(),
+            'approximate_anthropometrics': self._ui.checkBoxApproximateAnthropometrics.isChecked(),
         }
 
         return options

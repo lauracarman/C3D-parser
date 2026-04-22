@@ -75,6 +75,7 @@ class MainWindow(QMainWindow):
         self._filter_grf = True
         self._use_custom_ik_task_set = False
         self._ik_task_set_path = ''
+        self._approximate_anthropometrics = False
 
         self._colour_left = '#A52A2A'
         self._colour_right = '#0F52BA'
@@ -858,6 +859,7 @@ class MainWindow(QMainWindow):
             'filter_grf': self._filter_grf,
             'use_custom_ik_task_set': self._use_custom_ik_task_set,
             'ik_task_set_path': self._ik_task_set_path,
+            'approximate_anthropometrics': self._approximate_anthropometrics,
         }
 
         return options
@@ -874,6 +876,7 @@ class MainWindow(QMainWindow):
         self._filter_grf = options['filter_grf']
         self._use_custom_ik_task_set = options['use_custom_ik_task_set']
         self._ik_task_set_path = options['ik_task_set_path']
+        self._approximate_anthropometrics = options['approximate_anthropometrics']
 
     def _show_custom_marker_set_dialog(self):
         static_trials = []
@@ -942,6 +945,7 @@ class MainWindow(QMainWindow):
         settings.setValue('filter_grf', self._filter_grf)
         settings.setValue('use_custom_ik_task_set', self._use_custom_ik_task_set)
         settings.setValue('ik_task_set_path', self._ik_task_set_path)
+        settings.setValue('approximate_anthropometrics', self._approximate_anthropometrics)
         settings.endGroup()
 
     def _load_settings(self):
@@ -990,6 +994,8 @@ class MainWindow(QMainWindow):
             self._use_custom_ik_task_set = settings.value('use_custom_ik_task_set') == 'true'
         if settings.contains('ik_task_set_path'):
             self._ik_task_set_path = settings.value('ik_task_set_path')
+        if settings.contains('approximate_anthropometrics'):
+            self._approximate_anthropometrics = settings.value('approximate_anthropometrics') == 'true'
         settings.endGroup()
 
     def _quit_application(self):
