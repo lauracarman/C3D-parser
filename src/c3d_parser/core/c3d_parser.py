@@ -11,6 +11,7 @@ from datetime import datetime
 from collections import defaultdict
 from scipy import signal, interpolate
 from scipy.spatial.transform import Rotation
+from decimal import Decimal, ROUND_CEILING, ROUND_FLOOR
 
 from trc import TRCData
 from opensim_model_creator.Create_Model import create_model
@@ -474,10 +475,10 @@ def resample_data(frame_data, data_rate, frequency=100):
     if data_rate == frequency:
         return frame_data
 
-    start_time = frame_data.iloc[:, 0].iat[0]
-    end_time = frame_data.iloc[:, 0].iat[-1]
+    start_time = round(Decimal(frame_data.iloc[:, 0].iat[0]), 4).quantize(Decimal('0.01'), rounding=ROUND_CEILING)
+    end_time = round(Decimal(frame_data.iloc[:, 0].iat[-1]), 4).quantize(Decimal('0.01'), rounding=ROUND_FLOOR)
     number_of_frames = round((end_time - start_time) * frequency) + 1
-    time_array = np.linspace(start_time, end_time, number_of_frames)
+    time_array = np.linspace(float(start_time), float(end_time), number_of_frames)
 
     resampled_frame_data = pd.DataFrame(columns=frame_data.columns)
     resampled_frame_data.iloc[:, 0] = time_array
