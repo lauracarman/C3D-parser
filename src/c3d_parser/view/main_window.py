@@ -16,7 +16,8 @@ from pyvistaqt import QtInteractor
 from ll_visualiser.visualiser import visualise_model
 
 from c3d_parser.core.c3d_parser import (parse_session, extract_static_data, extract_marker_names, is_dynamic,
-    CancelException, write_normalised_kinematics, write_normalised_kinetics, write_spatiotemporal_data)
+    CancelException, write_normalised_kinematics, write_normalised_kinetics, write_spatiotemporal_data,
+    approximate_anthropometrics)
 from c3d_parser.settings.general import (APPLICATION_NAME, VERSION, DEFAULT_STYLE_SHEET, INVALID_STYLE_SHEET,
                                          get_marker_maps_dir)
 from c3d_parser.view.ui.ui_main_window import Ui_MainWindow
@@ -427,6 +428,35 @@ class MainWindow(QMainWindow):
             if static_trial != self._static_trial:
                 self._set_subject_info(static_trial)
                 self._static_trial = static_trial
+
+            # Fill in any anthropometric gaps.
+            if self._approximate_anthropometrics:
+                input_directory = self._ui.lineEditInputDirectory.text()
+                lab = self._ui.comboBoxLab.currentText()
+                marker_diameter = self._ui.doubleSpinBoxMarkerDiameter.value()
+                c3d_file = os.path.normpath(os.path.join(input_directory, static_trial))
+                anthropometrics = approximate_anthropometrics(c3d_file, lab, marker_diameter)
+
+                if not self._ui.doubleSpinBoxASISWidth.value():
+                    self._ui.doubleSpinBoxASISWidth.setValue(anthropometrics['inter_asis_distance'])
+                if not self._ui.doubleSpinBoxLeftLegLength.value():
+                    self._ui.doubleSpinBoxLeftLegLength.setValue(anthropometrics['left_leg_length'])
+                if not self._ui.doubleSpinBoxLeftKneeWidth.value():
+                    self._ui.doubleSpinBoxLeftKneeWidth.setValue(anthropometrics['left_knee_width'])
+                if not self._ui.doubleSpinBoxLeftAnkleWidth.value():
+                    self._ui.doubleSpinBoxLeftAnkleWidth.setValue(anthropometrics['left_ankle_width'])
+                if not self._ui.doubleSpinBoxRightLegLength.value():
+                    self._ui.doubleSpinBoxRightLegLength.setValue(anthropometrics['right_leg_length'])
+                if not self._ui.doubleSpinBoxRightKneeWidth.value():
+                    self._ui.doubleSpinBoxRightKneeWidth.setValue(anthropometrics['right_knee_width'])
+                if not self._ui.doubleSpinBoxRightAnkleWidth.value():
+                    self._ui.doubleSpinBoxRightAnkleWidth.setValue(anthropometrics['right_ankle_width'])
+
+        # Check height units.
+        height = self._ui.doubleSpinBoxHeight.value()
+        if height < 250:
+            self._ui.doubleSpinBoxHeight.setValue(height * 10)
+
 
     def _clear_subject_info(self):
         self._ui.comboBoxSex.setCurrentIndex(-1)

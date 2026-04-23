@@ -109,6 +109,36 @@ def parse_session(static_trial, dynamic_trials, input_directory, output_director
     return normalised_grf_data, normalised_kinematics, normalised_kinetics, spatiotemporal_data, deidentified_file_names
 
 
+def approximate_anthropometrics(c3d_file, lab, marker_diameter):
+    trc_data = TRCData()
+    trc_data.import_from(c3d_file)
+    frame_data = extract_marker_data(trc_data)
+    harmonise_markers(frame_data, lab, required_markers)
+    anthropometrics = calculate_anthropometrics(frame_data, marker_diameter)
+
+    return anthropometrics
+
+
+def calculate_anthropometrics(frame_data, marker_diameter):
+
+    def distance(frame, landmark_1, landmark_2):
+        return round(np.linalg.norm(np.array(frame[landmark_1]) - np.array(frame[landmark_2])), 1)
+
+    mid_frame = frame_data.iloc[len(frame_data) // 2].copy()
+
+    anthropometrics = {
+        'left_knee_width': distance(mid_frame, 'LKNE', 'LKNEM') - marker_diameter,
+        'right_knee_width': distance(mid_frame, 'RKNE', 'RKNEM') - marker_diameter,
+        'left_ankle_width': distance(mid_frame, 'LANK', 'LMED')  - marker_diameter,
+        'right_ankle_width': distance(mid_frame, 'RANK', 'RMED')  - marker_diameter,
+        'left_leg_length': distance(mid_frame, 'LASI', 'LMED'),
+        'right_leg_length': distance(mid_frame, 'RASI', 'RMED'),
+        'inter_asis_distance': distance(mid_frame, 'LASI', 'RASI'),
+    }
+
+    return anthropometrics
+
+
 def parse_static_trial(c3d_file, lab, marker_diameter, output_directory, static_data):
     file_name = os.path.basename(c3d_file)
     logger.info(f"Parsing static trial: {file_name}.")
