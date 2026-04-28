@@ -1258,7 +1258,6 @@ def calculate_spatiotemporal_data(frame_data, events, static_data):
     step_widths = {"Left": {}, "Right": {}}
     phases = {"Left": {}, "Right": {}}
     gait_speeds = {"Left": {}, "Right": {}}
-    cadences = {"Left": {}, "Right": {}}
     strike_count = 0
 
     left_leg_length = static_data['Left Leg Length'] / 1000
@@ -1377,7 +1376,6 @@ def calculate_spatiotemporal_data(frame_data, events, static_data):
     s_t_data["Double Support Phase %"] = double_support_phases
     s_t_data["Gait Speed (m/s)"] = gait_speeds
     s_t_data["Normalised Gait Speed"] = normalised_gait_speeds
-    s_t_data["Cadence (steps/min)"] = cadences
 
     data_frame = convert_to_data_frame(s_t_data)
 
