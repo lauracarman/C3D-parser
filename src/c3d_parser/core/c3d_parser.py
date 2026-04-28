@@ -1213,9 +1213,10 @@ def write_normalised_kinematics(kinematic_data, selected_trials, excluded_cycles
 def write_normalised_kinetics(kinetic_data, selected_trials, excluded_cycles, output_directory):
     normalised_directory = os.path.join(output_directory, 'normalised')
     output_file = os.path.join(normalised_directory, f"combined_kinetics.csv")
-    columns = ['hip_extensor_moment', 'hip_abductor_moment', 'hip_rotator_moment', 'hip_power',
-               'knee_extensor_moment', 'knee_abductor_moment', 'knee_rotator_moment', 'knee_power',
-               'ankle_dorsiflexor_moment', 'subtalar_inverter_moment', 'ankle_power']
+    columns = ['hip_extensor_moment', 'hip_abductor_moment', 'hip_rotator_moment',
+               'knee_extensor_moment', 'knee_abductor_moment', 'knee_rotator_moment',
+               'ankle_dorsiflexor_moment', 'subtalar_inverter_moment',
+               'hip_power', 'knee_power', 'ankle_power']
     write_normalised_data(kinetic_data, columns, selected_trials, excluded_cycles, output_file)
 
 
