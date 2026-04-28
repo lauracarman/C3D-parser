@@ -1480,7 +1480,7 @@ def convert_to_data_frame(s_t_data):
         side, cycle_number = label.split("-")
         return side, int(cycle_number)
 
-    data_frame = data_frame.reindex(sorted(data_frame.index, key=sort_key))
+    data_frame = data_frame.reindex(sorted(data_frame.index, key=sort_key), columns=list(s_t_data.keys()))
 
     return data_frame
 
