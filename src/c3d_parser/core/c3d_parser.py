@@ -1294,14 +1294,14 @@ def calculate_spatiotemporal_data(frame_data, events, static_data):
                 strike_times[foot] = event_time
 
                 # Calculate length and width of step.
-                if strike_position[opposite_side[foot]] is not None:
+                if strike_position[opposite_side[foot]] is not None and strike_count > 2:
                     previous_coordinates = strike_position[opposite_foot]
 
                     step_length = heel_coordinates[0] - previous_coordinates[0]     # type: ignore
-                    step_lengths[opposite_foot][stride_numbers[opposite_foot]] = step_length / 1000
+                    step_lengths[foot][stride_number - 1] = step_length / 1000
 
                     step_width = abs(heel_coordinates[2] - previous_coordinates[2])     # type: ignore
-                    step_widths[opposite_foot][stride_numbers[opposite_foot]] = step_width / 1000
+                    step_widths[foot][stride_number - 1] = step_width / 1000
 
             # Calculate stance and swing phases.
             if stride_number not in phases[foot]:
